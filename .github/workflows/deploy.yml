@@ -21,7 +21,6 @@ jobs:
         name: my-artifact
         path: .
 
-
     - uses: actions/download-artifact@v4
       with:
         name: my-artifact
@@ -52,9 +51,7 @@ jobs:
           key: ${{ secrets.KEY }}
           port: 22
           script: |
-            echo "Update nginx-prod.conf"
-            cd /home/botcogno/freqtrade/nginx
-            cp nginx-prod.conf /etc/nginx/conf.d
+            cd /home/botcogno/freqtrade/distfiles
             echo "Docker compose down"
             docker compose -f docker-compose-prod.yml down
             echo "Docker compose up"
