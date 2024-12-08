@@ -16,12 +16,15 @@ jobs:
     - name: checkout
       uses: actions/checkout@v4
 
-    - name: Get changed files
-      id: changed-files
-      uses: tj-actions/changed-files@v35
+    - uses: actions/upload-artifact@v4
       with:
-        since_last_remote_commit: true
-        separator: ","
+        name: my-artifact
+        path: /*
+
+    - uses: actions/download-artifact@v4
+      with:
+        name: my-artifact
+        path: distfiles
 
     - name: copy file to server
       uses: appleboy/scp-action@v0.1.7
@@ -30,7 +33,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
-        source: ${{ steps.changed-files.outputs.all_changed_files }}
+        source: ddistfiles/*
         target: /home/botcogno/freqtrade
         rm: true
   
