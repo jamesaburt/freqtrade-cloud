@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
     container_name: freqtrade
     volumes:
-      - ${HOME}/freqtrade/distfiles/ft_userdata/user_data:/freqtrade/user_data
+      - /home/botcogno/freqtrade/distfiles/ft_userdata/user_data:/freqtrade/user_data
     # Expose api on port 8080 (localhost only)
     # Please read the https://www.freqtrade.io/en/latest/rest-api/ documentation
     # before enabling this.
@@ -35,11 +35,11 @@ services:
     depends_on:
       - freqtrade
     volumes:
-      - ${HOME}/freqtrade/distfiles/nginx/nginx-prod.conf:/etc/nginx/nginx.conf
-      - ${HOME}/freqtrade/distfiles/certbot/www:/var/www/certbot/:ro
-      - ${HOME}/freqtrade/certbot/conf/:/etc/nginx/ssl/:ro
+      - /home/botcogno/distfiles/nginx/nginx-prod.conf:/etc/nginx/nginx.conf
+      - /home/botcogno/distfiles/certbot/www:/var/www/certbot/:ro
+      - /home/botcogno/freqtrade/certbot/conf/:/etc/nginx/ssl/:ro
   certbot:
     image: certbot/certbot:latest
     volumes:
-      - ${HOME}/freqtrade/distfiles/certbot/www/:/var/www/certbot/:rw
-      - ${HOME}/freqtrade/distfiles/certbot/conf/:/etc/letsencrypt/:rw
+      - /home/botcogno/freqtrade/distfiles/certbot/www/:/var/www/certbot/:rw
+      - /home/botcogno/freqtrade/distfiles/certbot/conf/:/etc/letsencrypt/:rw
