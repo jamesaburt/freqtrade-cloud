@@ -31,7 +31,8 @@ jobs:
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         source: ${{ steps.changed-files.outputs.all_changed_files }}
-        target: /home/botcongo/freqtrade
+        target: /home/botcogno/freqtrade
+        rm: true
   
   deploy-to-botcognos:
     needs: changes
