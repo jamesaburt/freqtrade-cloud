@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: prod
 
-      - name: server-actions
+      - name: server actions
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
