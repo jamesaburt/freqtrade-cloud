@@ -38,6 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Prod
 
+    steps:
       - name: server actions
         uses: appleboy/ssh-action@master
         with:
