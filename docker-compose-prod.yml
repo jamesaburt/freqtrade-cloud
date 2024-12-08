@@ -12,7 +12,7 @@ services:
     restart: unless-stopped
     container_name: freqtrade
     volumes:
-      - "./user_data:/freqtrade/user_data"
+      - ${HOME}/ft_userdata/user_data:/freqtrade/user_data
     # Expose api on port 8080 (localhost only)
     # Please read the https://www.freqtrade.io/en/latest/rest-api/ documentation
     # before enabling this.
@@ -25,42 +25,21 @@ services:
       --db-url sqlite:////freqtrade/user_data/tradesv3.sqlite
       --config /freqtrade/user_data/config.json
       --strategy Strategy004
-    networks:
-      - defi-traders-network
 
-  webserver:
-    image: nginx:mainline-alpine
-    container_name: webserver
-    restart: unless-stopped
+  nginx:
+    image: nginx:latest
+    container_name: nginx
     ports:
       - "80:80"
       - "443:443"
-    volumes:
-      - ./views:/var/www/html
-      - ./nginx-conf:/etc/nginx/conf.d
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - ./dhparam:/etc/ssl/certs
     depends_on:
       - freqtrade
-    networks:
-      - defi-traders-network
-
-  certbot:
-    image: certbot/certbot
-    container_name: certbot
     volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - ./views:/var/www/html
-    depends_on:
-      - webserver
-    command: certonly --webroot --webroot-path=/var/www/html --email darren.jensen@devbootstrap.com --agree-tos --no-eff-email --staging -d defi-traders.com -d www.defi-traders.com
-
-volumes:
-  certbot-etc:
-  certbot-var:
-
-networks:
-  defi-traders-network:
-    driver: bridge
+      - ${HOME}/nginx/nginx-prod.conf:/etc/nginx/nginx.conf
+      - ${HOME}/certbot/www:/var/www/certbot/:ro
+      - ${HOME}/certbot/conf/:/etc/nginx/ssl/:ro
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ${HOME}/certbot/www/:/var/www/certbot/:rw
+      - ${HOME}/certbot/conf/:/etc/letsencrypt/:rw
