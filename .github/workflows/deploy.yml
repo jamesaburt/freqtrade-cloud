@@ -36,7 +36,7 @@ jobs:
   deploy-to-botcognos:
     needs: build-and-push-to-prod
     runs-on: ubuntu-latest
-    environment: prod
+    environment: Prod
 
       - name: server actions
         uses: appleboy/ssh-action@master
