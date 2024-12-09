@@ -35,11 +35,11 @@ services:
     depends_on:
       - freqtrade
     volumes:
-      - /home/botcogno/freqtrade/distfiles/nginx/nginx-setup.conf:/etc/nginx/nginx.conf
-      - /home/botcogno/freqtrade/distfiles/certbot/www:/var/www/certbot/:ro
-      - /home/botcogno/freqtrade/distfiles/certbot/conf/:/etc/nginx/ssl/:ro
+      - /home/botcogno/nginx/nginx-setup.conf:/etc/nginx/nginx.conf
+      - /home/botcogno/certbot/www:/var/www/certbot/:ro
+      - /home/botcogno/certbot/conf/:/etc/nginx/ssl/:ro
   certbot:
     image: certbot/certbot:latest
     volumes:
-      - /home/botcogno/freqtrade/distfiles/certbot/www/:/var/www/certbot/:rw
-      - /home/botcogno/freqtrade/distfiles/certbot/conf/:/etc/letsencrypt/:rw
+      - /home/botcogno/certbot/www/:/var/www/certbot/:rw
+      - /home/botcogno/certbot/conf/:/etc/letsencrypt/:rw

@@ -18,13 +18,23 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: my-artifact
-        path: .
+        name: ft_userdata
+        path: /ft_userdata
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: nginx
+        path: /nginx
 
     - uses: actions/download-artifact@v4
       with:
-        name: my-artifact
-        path: distfiles
+        name: ft_userdata
+        path: ft_userdata
+
+    - uses: actions/download-artifact@v4
+      with:
+        name: nginx
+        path: nginx
 
     - name: copy file to server
       uses: appleboy/scp-action@v0.1.7
@@ -33,27 +43,27 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
-        source: distfiles/*
+        source: ft_userdata/*,nginx/*
         target: /home/botcogno/freqtrade
         rm: true
   
-  deploy-to-botcognos:
-    needs: changes
-    runs-on: ubuntu-latest
-    environment: Prod
+  #deploy-to-botcognos:
+  #  needs: changes
+  #  runs-on: ubuntu-latest
+  #  environment: Prod
 
-    steps:
-      - name: server actions
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: 22
-          script: |
-            cd /home/botcogno/freqtrade/distfiles
-            echo "Docker compose down"
-            sudo docker compose -f docker-compose-prod.yml down
-            echo "Docker compose up"
-            sudo docker compose -f docker-compose-prod.yml up --wait
-            sudo docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+  #  steps:
+  #    - name: server actions
+  #      uses: appleboy/ssh-action@master
+  #      with:
+  #        host: ${{ secrets.HOST }}
+  #        username: ${{ secrets.USERNAME }}
+  #        key: ${{ secrets.KEY }}
+  #        port: 22
+  #        script: |
+  #          cd /home/botcogno/freqtrade/distfiles
+  #          echo "Docker compose down"
+  #          sudo docker compose -f docker-compose-prod.yml down
+  #          echo "Docker compose up"
+  #          sudo docker compose -f docker-compose-prod.yml up --wait
+  #          sudo docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
