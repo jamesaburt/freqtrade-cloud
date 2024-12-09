@@ -8,8 +8,8 @@ on:
 
 # Jobs to be executed
 jobs:
-  changes:
-    name: test changed-files
+  copy_to_server:
+    name: upload artifacts
     runs-on: ubuntu-latest
     environment: Prod
     steps:
@@ -36,7 +36,7 @@ jobs:
         name: nginx
         path: nginx
 
-    - name: copy file to server
+    - name: copy artifacts to server
       uses: appleboy/scp-action@v0.1.7
       with:
         host: ${{ secrets.HOST }}
@@ -46,7 +46,17 @@ jobs:
         source: ft_userdata/*,nginx/*
         target: /home/botcogno/freqtrade
         rm: true
-  
+    
+    - name: copy file via ssh key
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        port: ${{ secrets.PORT }}
+        key: ${{ secrets.KEY }}
+        source: "docker-compose-prod.yml"
+        target: /home/botcogno
+    
   #deploy-to-botcognos:
   #  needs: changes
   #  runs-on: ubuntu-latest
